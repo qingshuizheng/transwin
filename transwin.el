@@ -137,6 +137,28 @@
       (transwin--set-transparency transwin--record-toggle-frame-transparency)
     (transwin--set-transparency 100)))
 
+;;; Fade: src - https://t.me/emacs_china/54114
+
+(defun transwin-fade-in (&optional frame from to inc)
+  (interactive)
+  (setq from (or from 0))
+  (setq to (or to 100))
+  (setq inc (or inc 1))
+  (dolist (i (number-sequence from to inc))
+    (let ((alpha (* i 0.01)))
+      (set-frame-parameter frame 'alpha alpha)
+      (sit-for 0.001))))
+
+(defun transwin-fade-out (&optional frame from to dec)
+  (setq dec (or dec 1))
+  (transwin-fade-in frame from to (- 0 dec)))
+
+;;;###autoload
+(defun transwin-fade ()
+  (interactive)
+  (progn (transwin-fade-out nil 97 10)
+         (transwin-fade-in nil 10 97)))
+
 ;;; Obsolete
 
 (define-obsolete-function-alias
